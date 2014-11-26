@@ -1,0 +1,10 @@
+box: wercker/python
+build:
+  steps:
+    - script:
+        name: Cache test
+        code: |
+          ls -R $WERCKER_CACHE_DIR
+          echo $WERCKER_CACHE_DIR
+          if [ -e $WERCKER_CACHE_DIR/test.txt ]; then cat test.txt; fi
+          echo hello > $WERCKER_CACHE_DIR/test.txt
