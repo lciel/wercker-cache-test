@@ -4,8 +4,14 @@ build:
     - script:
         name: Cache test
         code: |
-          uname -a
           ls -R $WERCKER_CACHE_DIR
-          echo $WERCKER_CACHE_DIR
-          if [ -e $WERCKER_CACHE_DIR/test.txt ]; then cat test.txt; fi
-          echo hello > $WERCKER_CACHE_DIR/test.txt
+          if [ -f "$WERCKER_CACHE_DIR/mystep/a-dependency.bin" ]; then
+              debug "a-dependency.bin found in cache"
+          else
+              debug "tool.rar not found in cache, will download"
+              if [ ! -e $WERCKER_CACHE_DIR/mystep ]; then
+                  debug "create directory $WERKCER_CACHE_DIR/mystep"
+                  mkdir -p $WERKCER_CACHE_DIR/mystep
+              fi
+              curl -o "$WERCKER_CACHE_DIR/mystep/a-dependency.bin" "http://example.com/a-dependency.bin"
+          fi
